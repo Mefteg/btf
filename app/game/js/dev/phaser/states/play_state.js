@@ -71,6 +71,23 @@ PlayState.prototype.createGameObjects = function() {
 		this.seas.push(sea);
 	};
 
+	// undergrounds
+	this.undergrounds = new Array();
+	for (var i = 0; i < 3; i++) {
+		var underground = new GameObject(this.game, 0, 0, 'sea');
+		underground.layer = "obstacle";
+		underground.x = this.game.camera.width * (i + 0.5);
+		underground.y = this.game.camera.height + underground.height;
+		this.game.add.existing(underground);
+
+		this.game.physics.p2.enable(underground);
+		underground.body.static = true;
+		underground.body.setRectangle(underground.width, 10, 0, underground.height - 9, 0);
+		this.collisionManager.addGameObject(underground);
+
+		this.undergrounds.push(underground);
+	};
+
 	// fishes
 	this.fishes = this.game.add.group();
 	for (var i=0; i<5; i++) {
@@ -155,6 +172,15 @@ PlayState.prototype.createBehaviours = function() {
 		var bSea = new BehaviourSea(sea);
 		bSea.create(this.seas, i);
 		sea.addBehaviour(bSea);
+	};
+
+	// undergrounds
+	for (var i = 0; i < this.undergrounds.length; i++) {
+		var underground = this.undergrounds[i];
+
+		var bSea = new BehaviourSea(underground);
+		bSea.create(this.undergrounds, i);
+		underground.addBehaviour(bSea);
 	};
 
 	// fishes
