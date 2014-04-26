@@ -14,9 +14,9 @@ LoadingState.prototype.preload = function() {
 	this.jetski.y = this.game.camera.height * 0.5;
 	this.game.add.existing(this.jetski);
 
-	this.game.load.spritesheet("sea","assets/images/sea.png", 640, 20);
-	this.game.load.spritesheet("gazoline","assets/images/gazoline.png", 26, 28);
-	this.game.load.spritesheet("fish","assets/images/fish.png", 32, 22);
+	this.game.load.spritesheet("sea", "assets/images/sea.png", 640, 20);
+	this.game.load.spritesheet("gazoline", "assets/images/gazoline.png", 26, 28);
+	this.game.load.spritesheet("fish", "assets/images/fish.png", 32, 22);
 }
 
 LoadingState.prototype.create = function() {
