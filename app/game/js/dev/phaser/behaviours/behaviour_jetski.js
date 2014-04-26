@@ -15,7 +15,6 @@ BehaviourJetski.prototype.create = function() {
 
 	go.gazoline = 0;
 
-	this.goOnce = true;
 	go.game.pollinator.on("go", this.go, this);
 };
 
@@ -47,12 +46,10 @@ BehaviourJetski.prototype.update = function() {
 };
 
 BehaviourJetski.prototype.go = function() {
-	if (this.goOnce == true) {
-		var go = this.gameobject;
-		
-		go.body.moveRight(300);
-		go.gazoline = 100;
+	var go = this.gameobject;
 
-		this.goOnce = false;
-	}
+	go.body.moveRight(300);
+	go.gazoline = 100;
+
+	go.game.pollinator.off("go", this.go, this);
 };

@@ -27,24 +27,24 @@ PlayState.prototype.create = function() {
 
 	this.camera = new GameObject(this.game, 0, 0);
 
-	this.sea = new Array();
+	this.seas = new Array();
 	for (var i = 0; i < 3; i++) {
-		var sprite = new GameObject(this.game, 0, 0, 'sea');
-		sprite.x = this.game.camera.width * (i + 1) * 0.5;
-		sprite.y = 265;
-		this.game.add.existing(sprite);
+		var sea = new GameObject(this.game, 0, 0, 'sea');
+		sea.x = this.game.camera.width * (i + 0.5);
+		sea.y = 265;
+		this.game.add.existing(sea);
 
-		this.game.physics.p2.enable(sprite);
-		sprite.body.static = true;
-		sprite.body.setRectangle(sprite.width, 10, 0, sprite.height - 9, 0);
+		this.game.physics.p2.enable(sea);
+		sea.body.static = true;
+		sea.body.setRectangle(sea.width, 10, 0, sea.height - 9, 0);
 
-		this.sea.push(sprite);
+		this.seas.push(sea);
 	};
 
 	this.jetski = new GameObject(this.game, 0, 0, 'jetski');
 	this.jetski.name = "jetski";
 	this.jetski.x = this.jetski.width * 0.5 + 20;
-	this.jetski.y = this.sea[0].y - (this.jetski.height + 10);
+	this.jetski.y = this.seas[0].y - (this.jetski.height + 10);
 	this.game.add.existing(this.jetski);
 	this.game.physics.p2.enable(this.jetski);
 
@@ -55,6 +55,14 @@ PlayState.prototype.create = function() {
 	var bCamera = new BehaviourCamera(this.camera, {follow: "jetski"});
 	bCamera.create();
 	this.jetski.addBehaviour(bCamera);
+
+	for (var i = 0; i < this.seas.length; i++) {
+		var sea = this.seas[i];
+
+		var bSea = new BehaviourSea(sea);
+		bSea.create(this.seas, i);
+		sea.addBehaviour(bSea);
+	};
 
 	var bJetski = new BehaviourJetski(this.jetski);
 	bJetski.create();
