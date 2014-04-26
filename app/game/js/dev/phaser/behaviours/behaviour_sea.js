@@ -27,5 +27,6 @@ BehaviourSea.prototype.update = function() {
 
 		go.body.x = this.seas[prevIndex].x + go.width;
 		go.body.setRectangle(go.width, 10, 0, go.height - 9, 0);
+		go.collisionManager.changeGameObjectLayer(go, go.layer);
     }
 };

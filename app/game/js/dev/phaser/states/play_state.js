@@ -64,9 +64,9 @@ PlayState.prototype.createGameObjects = function() {
 		this.game.add.existing(sea);
 
 		this.game.physics.p2.enable(sea);
-		this.collisionManager.addGameObject(sea);
 		sea.body.static = true;
 		sea.body.setRectangle(sea.width, 10, 0, sea.height - 9, 0);
+		this.collisionManager.addGameObject(sea);
 
 		this.seas.push(sea);
 	};
