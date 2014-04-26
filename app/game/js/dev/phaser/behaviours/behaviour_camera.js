@@ -53,4 +53,4 @@ BehaviourCamera.prototype.create = function() {
 */
 BehaviourCamera.prototype.update = function(){
 
-}
+};
