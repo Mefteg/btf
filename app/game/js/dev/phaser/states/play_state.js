@@ -18,6 +18,8 @@ PlayState.prototype.preload = function() {
 PlayState.prototype.create = function() {
 	// SETTINGS
 
+	this.game.pollinator.destroy();
+	this.game.plugins.add(Phaser.Plugin.Pollinator);
 	this.game.physics.startSystem(Phaser.Physics.P2JS);
 	this.game.physics.p2.gravity.y = 9.81 * 10;
 
@@ -25,8 +27,28 @@ PlayState.prototype.create = function() {
 
 	// GAMEOBJECTS
 
+	this.createGameObjects();
+
+	// BEHAVIOURS
+
+	this.createBehaviours();
+};
+
+PlayState.prototype.update = function() {
+	if (	this.txtPlay.input.justPressed()
+		||	this.game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)
+		||	this.game.input.keyboard.isDown(Phaser.Keyboard.ENTER)) {
+		this.txtPlay.destroy();
+
+		this.game.pollinator.dispatch("go");
+	}
+};
+
+PlayState.prototype.createGameObjects = function() {
+	// camera
 	this.camera = new GameObject(this.game, 0, 0);
 
+	// seas
 	this.seas = new Array();
 	for (var i = 0; i < 3; i++) {
 		var sea = new GameObject(this.game, 0, 0, 'sea');
@@ -41,6 +63,7 @@ PlayState.prototype.create = function() {
 		this.seas.push(sea);
 	};
 
+	// jetski
 	this.jetski = new GameObject(this.game, 0, 0, 'jetski');
 	this.jetski.name = "jetski";
 	this.jetski.x = this.jetski.width * 0.5 + 20;
@@ -48,14 +71,23 @@ PlayState.prototype.create = function() {
 	this.game.add.existing(this.jetski);
 	this.game.physics.p2.enable(this.jetski);
 
+	this.gazoline = new GameObject(this.game, 0, 0, 'gazoline');
+	this.gazoline.x = this.game.camera.width * 0.75;
+	this.gazoline.y = this.seas[0].y - (this.seas[0].height * 0.5);
+	this.game.add.existing(this.gazoline);
+
+	// text play
 	this.txtPlay = this.game.add.bitmapText(200, 100, 'btf_font','PLAY', 64);
 	this.txtPlay.inputEnabled = true;
+};
 
-	// BEHAVIOURS
+PlayState.prototype.createBehaviours = function() {
+	// camera
 	var bCamera = new BehaviourCamera(this.camera, {follow: "jetski"});
 	bCamera.create();
 	this.jetski.addBehaviour(bCamera);
 
+	// seas
 	for (var i = 0; i < this.seas.length; i++) {
 		var sea = this.seas[i];
 
@@ -64,17 +96,13 @@ PlayState.prototype.create = function() {
 		sea.addBehaviour(bSea);
 	};
 
+	// jetski
 	var bJetski = new BehaviourJetski(this.jetski);
 	bJetski.create();
 	this.jetski.addBehaviour(bJetski);
-};
 
-PlayState.prototype.update = function() {
-	if (	this.txtPlay.input.justPressed()
-		||	this.game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)
-		||	this.game.input.keyboard.isDown(Phaser.Keyboard.ENTER)) {
-		this.txtPlay.destroy();
-
-		this.game.pollinator.dispatch("go");
-	}
+	// gazoline
+	var bGazoline = new BehaviourGazoline(this.gazoline);
+	bGazoline.create(this.jetski);
+	this.gazoline.addBehaviour(bGazoline);
 };
