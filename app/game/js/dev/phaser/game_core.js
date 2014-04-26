@@ -12,7 +12,6 @@ var GameCore = function($scope, $http, $routeParams) {
 	var create = function() {
 		var bootstate = new BootState(this);
 		var loadstate = new LoadingState(this);
-		var landingstate = new LandingState(this);
 		var playstate = new PlayState(this);
 
 		$scope.game.state.start("Boot");

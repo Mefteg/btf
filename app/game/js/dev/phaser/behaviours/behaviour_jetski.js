@@ -13,7 +13,10 @@ BehaviourJetski.prototype.create = function() {
 	var go = this.gameobject;
 	this.cursors = go.game.input.keyboard.createCursorKeys();
 
-	go.gazoline = 100;
+	go.gazoline = 0;
+
+	this.goOnce = true;
+	go.game.pollinator.on("go", this.go, this);
 };
 
 BehaviourJetski.prototype.update = function() {
@@ -41,4 +44,15 @@ BehaviourJetski.prototype.update = function() {
 
         if (go.body.velocity.x > 0) go.body.velocity.x = 0;
     }
+};
+
+BehaviourJetski.prototype.go = function() {
+	if (this.goOnce == true) {
+		var go = this.gameobject;
+		
+		go.body.moveRight(300);
+		go.gazoline = 100;
+
+		this.goOnce = false;
+	}
 };

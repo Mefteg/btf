@@ -48,6 +48,9 @@ PlayState.prototype.create = function() {
 	this.game.add.existing(this.jetski);
 	this.game.physics.p2.enable(this.jetski);
 
+	this.txtPlay = this.game.add.bitmapText(200, 100, 'btf_font','PLAY', 64);
+	this.txtPlay.inputEnabled = true;
+
 	// BEHAVIOURS
 	var bCamera = new BehaviourCamera(this.camera, {follow: "jetski"});
 	bCamera.create();
@@ -59,5 +62,11 @@ PlayState.prototype.create = function() {
 };
 
 PlayState.prototype.update = function() {
+	if (	this.txtPlay.input.justPressed()
+		||	this.game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)
+		||	this.game.input.keyboard.isDown(Phaser.Keyboard.ENTER)) {
+		this.txtPlay.destroy();
 
+		this.game.pollinator.dispatch("go");
+	}
 };
