@@ -47,6 +47,11 @@ PlayState.prototype.update = function() {
 PlayState.prototype.createGameObjects = function() {
 	// camera
 	this.camera = new GameObject(this.game, 0, 0);
+	this.game.add.existing(this.camera);
+
+	// score
+	this.score = new GameObject(this.game, 0, 0);
+	this.game.add.existing(this.score);
 
 	// seas
 	this.seas = new Array();
@@ -97,8 +102,19 @@ PlayState.prototype.createGameObjects = function() {
 	this.guiBar.cameraOffset.y = 18 + this.guiBar.height * 0.5;
 	this.game.add.existing(this.guiBar);
 
+	// gui score
+	this.guiScore = this.game.add.bitmapText(0, 0, 'btf_font', "Score 10000", 24);
+	this.guiScore.name = "guiScore";
+	this.guiScore.fixedToCamera = true;
+	this.guiScore.cameraOffset.x = this.game.camera.width - 250;
+	this.guiScore.cameraOffset.y = 12;
+	this.game.add.existing(this.guiScore);
+
 	// text play
-	this.txtPlay = this.game.add.bitmapText(200, 100, 'btf_font','PLAY', 64);
+	this.txtPlay = this.game.add.bitmapText(0, 0, 'btf_font', "PLAY", 64);
+	this.txtPlay.fixedToCamera = true;
+	this.txtPlay.cameraOffset.x = this.game.camera.width * 0.5 - 125;
+	this.txtPlay.cameraOffset.y = this.game.camera.height * 0.5 - 50;
 	this.txtPlay.inputEnabled = true;
 };
 
@@ -106,7 +122,12 @@ PlayState.prototype.createBehaviours = function() {
 	// camera
 	var bCamera = new BehaviourCamera(this.camera, {follow: "jetski"});
 	bCamera.create();
-	this.jetski.addBehaviour(bCamera);
+	this.camera.addBehaviour(bCamera);
+
+	// score
+	var bScore = new BehaviourScore(this.score, {bitmapText: "guiScore"});
+	bScore.create();
+	this.score.addBehaviour(bScore);
 
 	// seas
 	for (var i = 0; i < this.seas.length; i++) {
