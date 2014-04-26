@@ -76,6 +76,27 @@ PlayState.prototype.createGameObjects = function() {
 	this.gazoline.y = this.seas[0].y - (this.seas[0].height * 0.5);
 	this.game.add.existing(this.gazoline);
 
+	// gui gazoline
+	this.guiGazoline = new GameObject(this.game, 0, 0, 'gazoline');
+	this.guiGazoline.fixedToCamera = true;
+	this.guiGazoline.cameraOffset.x = 10 + this.guiGazoline.width * 0.5;
+	this.guiGazoline.cameraOffset.y = 10 + this.guiGazoline.height * 0.5;
+	this.game.add.existing(this.guiGazoline);
+
+	// gui frame bar
+	this.guiFrameBar = new GameObject(this.game, 0, 0, 'guiframebar');
+	this.guiFrameBar.fixedToCamera = true;
+	this.guiFrameBar.cameraOffset.x = 40 + this.guiFrameBar.width * 0.5;
+	this.guiFrameBar.cameraOffset.y = 10 + this.guiFrameBar.height * 0.5;
+	this.game.add.existing(this.guiFrameBar);
+
+	// gui bar
+	this.guiBar = new GameObject(this.game, 0, 0, 'guibar');
+	this.guiBar.fixedToCamera = true;
+	this.guiBar.cameraOffset.x = 48 + this.guiBar.width * 0.5;
+	this.guiBar.cameraOffset.y = 18 + this.guiBar.height * 0.5;
+	this.game.add.existing(this.guiBar);
+
 	// text play
 	this.txtPlay = this.game.add.bitmapText(200, 100, 'btf_font','PLAY', 64);
 	this.txtPlay.inputEnabled = true;
@@ -105,4 +126,9 @@ PlayState.prototype.createBehaviours = function() {
 	var bGazoline = new BehaviourGazoline(this.gazoline);
 	bGazoline.create(this.jetski);
 	this.gazoline.addBehaviour(bGazoline);
+
+	// gui bar
+	var bGuiBar = new BehaviourGUIBar(this.guiBar);
+	bGuiBar.create(this.jetski);
+	this.guiBar.addBehaviour(bGuiBar);
 };

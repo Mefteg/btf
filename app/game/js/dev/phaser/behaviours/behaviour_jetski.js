@@ -36,6 +36,8 @@ BehaviourJetski.prototype.update = function() {
 
 		        go.body.data.force[0] += magnitude * Math.cos(angle);
 		        go.body.data.force[1] += magnitude * Math.sin(angle);
+
+		        go.game.pollinator.dispatch("updateTank", {tank: go.gazoline});
 		    }
 	    } else if (this.cursors.left.isDown) {
 	    	var magnitude = go.body.world.pxmi(-100);
@@ -45,8 +47,12 @@ BehaviourJetski.prototype.update = function() {
 	        go.body.data.force[1] += magnitude * Math.sin(angle);
 
 	        if (go.body.velocity.x > 0) go.body.velocity.x = 0;
+
+	        
 	    }
 	}
+
+	go.game.pollinator.dispatch("updateTank", {tank: go.gazoline});
 };
 
 BehaviourJetski.prototype.go = function() {
@@ -61,5 +67,6 @@ BehaviourJetski.prototype.go = function() {
 BehaviourJetski.prototype.refill = function() {
 	var go = this.gameobject;
 
-	go.gazoline = 50;
+	go.gazoline += 50;
+	if (go.gazoline > 100) go.gazoline = 100;
 };

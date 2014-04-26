@@ -19,6 +19,8 @@ LoadingState.prototype.preload = function() {
 	this.game.load.spritesheet("sea", "assets/images/sea.png", 640, 20);
 	this.game.load.spritesheet("gazoline", "assets/images/gazoline.png", 26, 28);
 	this.game.load.spritesheet("fish", "assets/images/fish.png", 32, 22);
+	this.game.load.spritesheet("guiframebar", "assets/images/guiframebar.png", 216, 28);
+	this.game.load.spritesheet("guibar", "assets/images/guibar.png", 200, 12);
 };
 
 LoadingState.prototype.create = function() {
