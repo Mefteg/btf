@@ -37,8 +37,31 @@ BehaviourJetski.prototype.update = function() {
 		go.game.pollinator.dispatch("gameover");
 	}
 
+	var left = false;
+	var right = false;
+	var up = false;
+	var down = false;
+
+	var pointer = null;
+	if (go.game.input.mousePointer.isDown) pointer = go.game.input.mousePointer;
+	if (go.game.input.pointer1.isDown) pointer = go.game.input.pointer1;
+
+	if (pointer) {
+		if (pointer.x < go.game.camera.width * 0.25) {
+			left = true;
+		} else if (pointer.x > go.game.camera.width * 0.75) {
+			right = true;
+		}
+
+		if (pointer.y < go.game.camera.height * 0.25) {
+			up = true;
+		} else if (pointer.y > go.game.camera.height * 0.75) {
+			down = true;
+		}
+	}
+
 	if (go.canRide) {
-		if (this.cursors.right.isDown) {
+		if (this.cursors.right.isDown || right) {
 			var usedGazoline = go.game.time.elapsed * 0.001 * 5;
 			if (go.gazoline >= usedGazoline) {
 				go.gazoline -= usedGazoline;
@@ -59,7 +82,7 @@ BehaviourJetski.prototype.update = function() {
 			        this.toxicDelay = 500;
 		        }		        
 		    }
-	    } else if (this.cursors.left.isDown) {
+	    } else if (this.cursors.left.isDown || left) {
 	    	var magnitude = go.body.world.pxmi(-100);
 	        var angle = go.body.data.angle;
 
@@ -67,9 +90,9 @@ BehaviourJetski.prototype.update = function() {
 	        go.body.data.force[1] += magnitude * Math.sin(angle);
 
 	        if (go.body.velocity.x > 0) go.body.velocity.x = 0;
-	    } else if (this.cursors.up.isDown) {
+	    } else if (this.cursors.up.isDown || up) {
 	    	go.body.rotateLeft(25);
-	    } else if (this.cursors.down.isDown) {
+	    } else if (this.cursors.down.isDown || down) {
 	    	go.body.rotateRight(25);
 	    }
 	}

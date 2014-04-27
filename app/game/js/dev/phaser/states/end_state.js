@@ -37,6 +37,7 @@ EndState.prototype.create = function() {
 
 EndState.prototype.update = function() {
 	if (	this.txtPlay.input.justPressed()
+		||	this.txtPlay.input.justPressed(1)
 		||	this.game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)
 		||	this.game.input.keyboard.isDown(Phaser.Keyboard.ENTER)) {
 		this.txtPlay.destroy();
