@@ -57,7 +57,6 @@ PlayState.prototype.update = function() {
 	if (this.txtPlay) {
 		if (	this.txtPlay.input.justPressed()
 			||	this.txtPlay.input.justPressed(1)) {
-			this.txtPlay.destroy();
 
 			this.game.pollinator.dispatch("go");
 		}
@@ -65,7 +64,6 @@ PlayState.prototype.update = function() {
 
 	if (	this.game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)
 		||	this.game.input.keyboard.isDown(Phaser.Keyboard.ENTER)) {
-		this.txtPlay.destroy();
 
 		this.game.pollinator.dispatch("go");
 	}
