@@ -36,11 +36,16 @@ EndState.prototype.create = function() {
 };
 
 EndState.prototype.update = function() {
-	if (	this.game.input.mousePointer.isDown
-		||	this.game.input.pointer1.isDown
-		||	this.game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)
+	if (	this.go.input.justPressed(0)
+		||	this.go.input.justPressed(1)) {
+
+		this.game.state.start("Play", true, false, {
+			go: true
+		});
+	}
+
+	if (	this.game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)
 		||	this.game.input.keyboard.isDown(Phaser.Keyboard.ENTER)) {
-		this.txtPlay.destroy();
 
 		this.game.state.start("Play", true, false, {
 			go: true
@@ -123,7 +128,7 @@ EndState.prototype.createGameObjects = function() {
 	this.guiFun = this.game.add.bitmapText(0, 0, 'btf_font', textGuiFun, 24);
 	this.guiFun.name = "guiFun";
 	this.guiFun.fixedToCamera = true;
-	this.guiFun.cameraOffset.x = 240;
+	this.guiFun.cameraOffset.x = 200;
 	this.guiFun.cameraOffset.y = 190;
 	this.game.add.existing(this.guiFun);
 
@@ -134,6 +139,15 @@ EndState.prototype.createGameObjects = function() {
 	this.btnFullscreen.cameraOffset.x = 10;
 	this.btnFullscreen.cameraOffset.y =
 		this.game.camera.height - (this.btnFullscreen.height + 10);
+
+	// go
+	this.go = new GameObject(this.game, 0, 0);
+	this.go.x = this.game.camera.width * 0.5;
+	this.go.y = (this.btnFullscreen.cameraOffset.y - 10) * 0.5;
+	this.go.width = this.game.camera.width;
+	this.go.height = this.btnFullscreen.cameraOffset.y - 10;
+	this.go.inputEnabled = true;
+	this.game.add.existing(this.go);
 };
 
 EndState.prototype.createBehaviours = function() {

@@ -41,18 +41,22 @@ BehaviourGazoline.prototype.update = function() {
 
 BehaviourGazoline.prototype.goDown = function() {
 	var go = this.gameobject;
-	this.tween = go.game.add.tween(go);
-	this.tween.to({y: (go.y + this.deltaY)}, 1500, Phaser.Easing.Sinusoidal.InOut);
-	this.tween.onComplete.add(this.goUp, this);
-	this.tween.start();
+	if (go.game) {
+		this.tween = go.game.add.tween(go);
+		this.tween.to({y: (go.y + this.deltaY)}, 1500, Phaser.Easing.Sinusoidal.InOut);
+		this.tween.onComplete.add(this.goUp, this);
+		this.tween.start();
+	}
 };
 
 BehaviourGazoline.prototype.goUp = function() {
 	var go = this.gameobject;
-	this.tween = go.game.add.tween(go);
-	this.tween.to({y: (go.y - this.deltaY)}, 1500, Phaser.Easing.Sinusoidal.InOut);
-	this.tween.onComplete.add(this.goDown, this);
-	this.tween.start();
+	if (go.game) {
+		this.tween = go.game.add.tween(go);
+		this.tween.to({y: (go.y - this.deltaY)}, 1500, Phaser.Easing.Sinusoidal.InOut);
+		this.tween.onComplete.add(this.goDown, this);
+		this.tween.start();
+	}
 };
 
 BehaviourGazoline.prototype.relocate = function() {

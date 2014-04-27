@@ -34,11 +34,16 @@ LandingState.prototype.create = function() {
 };
 
 LandingState.prototype.update = function() {
-	if (	this.game.input.mousePointer.isDown
-		||	this.game.input.pointer1.isDown
-		||	this.game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)
+	if (	this.go.input.justPressed(0)
+		||	this.go.input.justPressed(1)) {
+
+		this.game.state.start("Play", true, false, {
+			go: true
+		});
+	}
+
+	if (	this.game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)
 		||	this.game.input.keyboard.isDown(Phaser.Keyboard.ENTER)) {
-		//this.txtPlay.destroy();
 
 		this.game.state.start("Play", true, false, {
 			go: true
@@ -116,14 +121,14 @@ LandingState.prototype.createGameObjects = function() {
 		this.clouds.add(cloud);
 	}
 
-	// gui score
-	var textGuiScore = "Beneath The\nFun";
-	this.guiScore = this.game.add.bitmapText(0, 0, 'btf_font', textGuiScore, 64);
-	this.guiScore.align = 'center';
-	this.guiScore.fixedToCamera = true;
-	this.guiScore.cameraOffset.x = 80;
-	this.guiScore.cameraOffset.y = 60;
-	this.game.add.existing(this.guiScore);
+	// gui title
+	var textGuiTitle = "Beneath The\nFun";
+	this.guiTitle = this.game.add.bitmapText(0, 0, 'btf_font', textGuiTitle, 64);
+	this.guiTitle.align = 'center';
+	this.guiTitle.fixedToCamera = true;
+	this.guiTitle.cameraOffset.x = 80;
+	this.guiTitle.cameraOffset.y = 60;
+	this.game.add.existing(this.guiTitle);
 
 	// button fullscreen
 	this.btnFullscreen = this.game.add.button(
@@ -132,6 +137,15 @@ LandingState.prototype.createGameObjects = function() {
 	this.btnFullscreen.cameraOffset.x = 10;
 	this.btnFullscreen.cameraOffset.y =
 		this.game.camera.height - (this.btnFullscreen.height + 10);
+
+	// go
+	this.go = new GameObject(this.game, 0, 0);
+	this.go.x = this.game.camera.width * 0.5;
+	this.go.y = (this.btnFullscreen.cameraOffset.y - 10) * 0.5;
+	this.go.width = this.game.camera.width;
+	this.go.height = this.btnFullscreen.cameraOffset.y - 10;
+	this.go.inputEnabled = true;
+	this.game.add.existing(this.go);
 };
 
 LandingState.prototype.createBehaviours = function() {
