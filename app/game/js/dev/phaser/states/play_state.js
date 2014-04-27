@@ -96,7 +96,7 @@ PlayState.prototype.createGameObjects = function() {
 		var kicker = new GameObject(this.game, 0, 0, 'kicker');
 		kicker.layer = "obstacle";
 		kicker.x = this.game.camera.width * (i + 0.5);
-		kicker.y = this.seas[0].y - 10 + 100;
+		kicker.y = this.seas[0].y - 10;
 		this.game.add.existing(kicker);
 
 		this.game.physics.p2.enable(kicker);
