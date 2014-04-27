@@ -102,15 +102,14 @@ PlayState.prototype.createGameObjects = function() {
 		this.game.physics.p2.enable(kicker);
 		kicker.body.static = true;
 		kicker.body.clearShapes();
-		kicker.body.loadPolygon('kickerdata', 'kicker');
-		
-		/*var shape = kicker.body.data.shapes[0];
-		console.log(shape);
-		shape.vertices[0][0] = -1;
-		shape.vertices[0][1] = 1;
-		shape.updateTriangles();
-		shape.updateArea();
-		console.log(shape);*/
+
+		kicker.body.addPolygon({}, [
+			[0, 32],
+			[64, 32],
+			[64, 0]
+		]);
+
+		kicker.body.data.shapeOffsets[0][0] = -0.5;
 
 		this.collisionManager.addGameObject(kicker);
 

@@ -23,8 +23,6 @@ LoadingState.prototype.preload = function() {
 	this.game.load.spritesheet("toxic", "assets/images/toxic.png", 12, 12);
 	this.game.load.spritesheet("guiframebar", "assets/images/guiframebar.png", 216, 28);
 	this.game.load.spritesheet("guibar", "assets/images/guibar.png", 200, 12);
-
-	this.game.load.physics('kickerdata', 'assets/physics_data/kickerdata.json');
 };
 
 LoadingState.prototype.create = function() {
