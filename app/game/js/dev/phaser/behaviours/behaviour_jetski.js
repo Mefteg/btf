@@ -68,9 +68,9 @@ BehaviourJetski.prototype.update = function() {
 
 	        if (go.body.velocity.x > 0) go.body.velocity.x = 0;
 	    } else if (this.cursors.up.isDown) {
-	    	go.body.rotateLeft(10);
+	    	go.body.rotateLeft(25);
 	    } else if (this.cursors.down.isDown) {
-	    	go.body.rotateRight(10);
+	    	go.body.rotateRight(25);
 	    }
 	}
 

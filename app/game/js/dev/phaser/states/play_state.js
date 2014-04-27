@@ -141,6 +141,22 @@ PlayState.prototype.createGameObjects = function() {
 		this.fishes.add(fish);
 	}
 
+	// clouds
+	this.clouds = this.game.add.group();
+	for (var i=0; i<5; i++) {
+		var cloud = null;
+		if (Math.random() < 0.5) {
+			cloud = new GameObject(this.game, 0, 0, 'cloud1');
+		} else {
+			cloud = new GameObject(this.game, 0, 0, 'cloud2');
+		}
+
+		cloud.x = Math.random() * 2 * this.game.camera.width;
+		cloud.y = 20 + cloud.height * 2 + Math.random() * 50;
+
+		this.clouds.add(cloud);
+	}
+
 	// toxic emitter
 	this.toxicEmitter = new GameObject(this.game, 0, 0);
 	this.game.add.existing(this.toxicEmitter);
@@ -253,6 +269,15 @@ PlayState.prototype.createBehaviours = function() {
 		var bFish = new BehaviourFish(fish);
 		bFish.create();
 		fish.addBehaviour(bFish);
+	};
+
+	// clouds
+	for (var i = 0; i < this.clouds.length; i++) {
+		var cloud = this.clouds.getAt(i);
+
+		var bCloud = new BehaviourCloud(cloud);
+		bCloud.create();
+		cloud.addBehaviour(bCloud);
 	};
 
 	// toxic emitter
