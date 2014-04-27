@@ -87,6 +87,8 @@ BehaviourFish.prototype.onBeginContact = function(_body2, _shapeA, _shapeB, _equ
 		go.layer = "default";
 		go.collisionManager.changeGameObjectLayer(go, "default");
 		this.alive = false;
+
+		go.game.pollinator.dispatch("dead_fish");
 	} else {
 		go.body.angle = (go.body.angle + 150 + Math.random() * 60) % 360;
 		this.computeDirection();

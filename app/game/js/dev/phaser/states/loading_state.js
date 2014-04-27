@@ -27,6 +27,10 @@ LoadingState.prototype.preload = function() {
 
 LoadingState.prototype.create = function() {
 	this.game.state.start("Play");
+	/*this.game.state.start("End", true, false, {
+		score: 2345,
+		deadFishes: 37
+	});*/
 };
 
 LoadingState.prototype.update = function() {

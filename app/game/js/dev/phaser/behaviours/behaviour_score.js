@@ -15,7 +15,10 @@ BehaviourScore.prototype.create = function() {
 	go.score = 0;
 	go.bonus = 0;
 
+	go.deadFishes = 0;
+
 	go.game.pollinator.on("bonus", this.addBonus, this);
+	go.game.pollinator.on("dead_fish", this.addDeadFish, this);
 
 	if (this.args) {
 		if (this.args.bitmapText) {
@@ -40,4 +43,10 @@ BehaviourScore.prototype.addBonus = function(_args) {
 	var go = this.gameobject;
 
 	go.bonus += _args.bonus;
+};
+
+BehaviourScore.prototype.addDeadFish = function(_args) {
+	var go = this.gameobject;
+
+	go.deadFishes++;
 };

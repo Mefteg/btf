@@ -13,6 +13,7 @@ var GameCore = function($scope, $http, $routeParams) {
 		var bootstate = new BootState(this);
 		var loadstate = new LoadingState(this);
 		var playstate = new PlayState(this);
+		var endstate = new EndState(this);
 
 		$scope.game.state.start("Boot");
 	};

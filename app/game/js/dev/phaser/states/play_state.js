@@ -11,6 +11,15 @@ var PlayState = function(_game) {
 PlayState.prototype = Object.create(Phaser.State.prototype);
 PlayState.prototype.constructor = PlayState;
 
+PlayState.prototype.init = function(_args) {
+	this.go = false;
+	if (_args) {
+		if (_args.go) {
+			this.go = _args.go;
+		}
+	}
+};
+
 PlayState.prototype.preload = function() {
 
 };
@@ -35,11 +44,22 @@ PlayState.prototype.create = function() {
 	// BEHAVIOURS
 
 	this.createBehaviours();
+
+	if (this.go == true) {
+		this.game.pollinator.dispatch("go");
+	}
 };
 
 PlayState.prototype.update = function() {
-	if (	this.txtPlay.input.justPressed()
-		||	this.game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)
+	if (this.txtPlay) {
+		if (this.txtPlay.input.justPressed()) {
+			this.txtPlay.destroy();
+
+			this.game.pollinator.dispatch("go");
+		}
+	}
+
+	if (	this.game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)
 		||	this.game.input.keyboard.isDown(Phaser.Keyboard.ENTER)) {
 		this.txtPlay.destroy();
 
@@ -162,16 +182,18 @@ PlayState.prototype.createGameObjects = function() {
 	this.guiScore = this.game.add.bitmapText(0, 0, 'btf_font', "Score 10000", 24);
 	this.guiScore.name = "guiScore";
 	this.guiScore.fixedToCamera = true;
-	this.guiScore.cameraOffset.x = this.game.camera.width - 250;
-	this.guiScore.cameraOffset.y = 12;
+	this.guiScore.cameraOffset.x = this.game.camera.width - 200;
+	this.guiScore.cameraOffset.y = 14;
 	this.game.add.existing(this.guiScore);
 
 	// text play
-	this.txtPlay = this.game.add.bitmapText(0, 0, 'btf_font', "PLAY", 64);
-	this.txtPlay.fixedToCamera = true;
-	this.txtPlay.cameraOffset.x = this.game.camera.width * 0.5 - 125;
-	this.txtPlay.cameraOffset.y = this.game.camera.height * 0.5 - 50;
-	this.txtPlay.inputEnabled = true;
+	if (this.go == false) {
+		this.txtPlay = this.game.add.bitmapText(0, 0, 'btf_font', "PLAY", 64);
+		this.txtPlay.fixedToCamera = true;
+		this.txtPlay.cameraOffset.x = 225;
+		this.txtPlay.cameraOffset.y = this.game.camera.height * 0.5 - 50;
+		this.txtPlay.inputEnabled = true;
+	}
 };
 
 PlayState.prototype.createBehaviours = function() {
@@ -243,5 +265,8 @@ PlayState.prototype.createBehaviours = function() {
 };
 
 PlayState.prototype.gameOver = function() {
-	this.game.state.start("Play");
+	this.game.state.start("End", true, false, {
+		score: this.score.score,
+		deadFishes: this.score.deadFishes
+	});
 };
