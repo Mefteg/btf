@@ -18,7 +18,7 @@ BehaviourFish.prototype.create = function() {
 
 	go.body.angle = Math.random() * 360;
 
-	this.delay = 1000 + Math.random() * 1000;
+	this.delay = 0;
 };
 
 BehaviourFish.prototype.update = function() {
@@ -58,7 +58,7 @@ BehaviourFish.prototype.computeDirection = function() {
 BehaviourFish.prototype.onBeginContact = function(_body2, _shapeA, _shapeB, _equation) {
 	var go = this.gameobject;
 
-	go.body.angle = (go.body.angle +180) % 360;
+	go.body.angle = (go.body.angle + 150 + Math.random() * 60) % 360;
 	this.computeDirection();
 };
 

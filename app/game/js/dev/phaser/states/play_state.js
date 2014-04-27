@@ -26,6 +26,8 @@ PlayState.prototype.create = function() {
 
 	this.game.world.setBounds(null);
 
+	this.game.pollinator.on("gameover", this.gameOver, this);
+
 	// GAMEOBJECTS
 
 	this.createGameObjects();
@@ -93,8 +95,9 @@ PlayState.prototype.createGameObjects = function() {
 	for (var i=0; i<5; i++) {
 		var fish = new GameObject(this.game, 0, 0, 'fish');
 		fish.layer = "fish";
+
 		fish.x = Math.random() * this.game.camera.width;
-		fish.y = 265 + 10 + Math.random() * 50;
+		fish.y = 265 + fish.height * 2 + Math.random() * 50;
 
 		this.game.physics.p2.enable(fish);
 		this.collisionManager.addGameObject(fish);
@@ -106,8 +109,9 @@ PlayState.prototype.createGameObjects = function() {
 	this.jetski = new GameObject(this.game, 0, 0, 'jetski');
 	this.jetski.name = "jetski";
 	this.jetski.layer = "jetski";
-	this.jetski.x = this.jetski.width * 0.5 + 20;
-	this.jetski.y = this.seas[0].y - (this.jetski.height + 10);
+	//this.jetski.x = this.jetski.width * 0.5 + 20;
+	this.jetski.x = 0;
+	this.jetski.y = this.seas[0].y - 10;
 	this.game.add.existing(this.jetski);
 	this.game.physics.p2.enable(this.jetski);
 	this.collisionManager.addGameObject(this.jetski);
@@ -206,4 +210,8 @@ PlayState.prototype.createBehaviours = function() {
 	var bGuiBar = new BehaviourGUIBar(this.guiBar);
 	bGuiBar.create(this.jetski);
 	this.guiBar.addBehaviour(bGuiBar);
+};
+
+PlayState.prototype.gameOver = function() {
+	this.game.state.start("Play");
 };

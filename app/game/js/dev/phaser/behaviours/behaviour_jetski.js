@@ -18,12 +18,21 @@ BehaviourJetski.prototype.create = function() {
 
 	go.game.pollinator.on("go", this.go, this);
 	go.game.pollinator.on("refill", this.refill, this);
+
+	go.body.moveRight(85);
 };
 
 BehaviourJetski.prototype.update = function() {
 	Behaviour.prototype.update.call(this);
 
 	var go = this.gameobject;
+
+	var sqrMagnitude = go.body.velocity.x * go.body.velocity.x + go.body.velocity.y * go.body.velocity.y;
+	if (go.canRide && sqrMagnitude < 1) {
+		go.canRide = false;
+
+		go.game.pollinator.dispatch("gameover");
+	}
 
 	if (go.canRide) {
 		if (this.cursors.right.isDown) {
@@ -50,9 +59,9 @@ BehaviourJetski.prototype.update = function() {
 
 	        
 	    }
-	}
 
-	go.game.pollinator.dispatch("updateTank", {tank: go.gazoline});
+	    go.game.pollinator.dispatch("updateTank", {tank: go.gazoline});
+	}
 };
 
 BehaviourJetski.prototype.go = function() {
@@ -67,6 +76,6 @@ BehaviourJetski.prototype.go = function() {
 BehaviourJetski.prototype.refill = function() {
 	var go = this.gameobject;
 
-	go.gazoline += 50;
+	go.gazoline += 25;
 	if (go.gazoline > 100) go.gazoline = 100;
 };
