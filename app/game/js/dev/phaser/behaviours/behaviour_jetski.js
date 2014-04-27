@@ -92,6 +92,6 @@ BehaviourJetski.prototype.go = function() {
 BehaviourJetski.prototype.refill = function() {
 	var go = this.gameobject;
 
-	go.gazoline += 25;
+	go.gazoline += 30;
 	if (go.gazoline > 100) go.gazoline = 100;
 };
