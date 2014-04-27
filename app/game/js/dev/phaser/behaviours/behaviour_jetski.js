@@ -47,16 +47,18 @@ BehaviourJetski.prototype.update = function() {
 	if (go.game.input.pointer1.isDown) pointer = go.game.input.pointer1;
 
 	if (pointer) {
-		if (pointer.x < go.game.camera.width * 0.25) {
-			left = true;
-		} else if (pointer.x > go.game.camera.width * 0.75) {
-			right = true;
-		}
-
 		if (pointer.y < go.game.camera.height * 0.25) {
 			up = true;
 		} else if (pointer.y > go.game.camera.height * 0.75) {
 			down = true;
+		}
+
+		if (up == false && down == false) {
+			if (pointer.x < go.game.camera.width * 0.25) {
+				left = true;
+			} else if (pointer.x > go.game.camera.width * 0.75) {
+				right = true;
+			}
 		}
 	}
 
