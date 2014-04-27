@@ -90,6 +90,35 @@ PlayState.prototype.createGameObjects = function() {
 		this.undergrounds.push(underground);
 	};
 
+	// kickers
+	this.kickers = this.game.add.group();
+	for (var i = 0; i < 1; i++) {
+		var kicker = new GameObject(this.game, 0, 0, 'kicker');
+		kicker.layer = "obstacle";
+		kicker.x = this.game.camera.width * (i + 0.5);
+		kicker.y = this.seas[0].y - 10 + 100;
+		this.game.add.existing(kicker);
+
+		this.game.physics.p2.enable(kicker);
+		kicker.body.static = true;
+		kicker.body.clearShapes();
+		kicker.body.loadPolygon('kickerdata', 'kicker');
+		
+		/*var shape = kicker.body.data.shapes[0];
+		console.log(shape);
+		shape.vertices[0][0] = -1;
+		shape.vertices[0][1] = 1;
+		shape.updateTriangles();
+		shape.updateArea();
+		console.log(shape);*/
+
+		this.collisionManager.addGameObject(kicker);
+
+		kicker.body.debug = true;
+
+		this.kickers.add(kicker);
+	};
+
 	// fishes
 	this.fishes = this.game.add.group();
 	for (var i=0; i<5; i++) {
@@ -105,11 +134,14 @@ PlayState.prototype.createGameObjects = function() {
 		this.fishes.add(fish);
 	}
 
+	// toxic emitter
+	this.toxicEmitter = new GameObject(this.game, 0, 0);
+	this.game.add.existing(this.toxicEmitter);
+
 	// jetski
 	this.jetski = new GameObject(this.game, 0, 0, 'jetski');
 	this.jetski.name = "jetski";
 	this.jetski.layer = "jetski";
-	//this.jetski.x = this.jetski.width * 0.5 + 20;
 	this.jetski.x = 0;
 	this.jetski.y = this.seas[0].y - 10;
 	this.game.add.existing(this.jetski);
@@ -195,6 +227,11 @@ PlayState.prototype.createBehaviours = function() {
 		bFish.create();
 		fish.addBehaviour(bFish);
 	};
+
+	// toxic emitter
+	var bToxicEmitter = new BehaviourToxicEmitter(this.toxicEmitter);
+	bToxicEmitter.create(this.collisionManager);
+	this.toxicEmitter.addBehaviour(bToxicEmitter);
 
 	// jetski
 	var bJetski = new BehaviourJetski(this.jetski);

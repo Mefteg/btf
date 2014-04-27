@@ -17,10 +17,14 @@ LoadingState.prototype.preload = function() {
 	this.game.load.bitmapFont("btf_font", "assets/fonts/btf.png", "assets/fonts/btf.fnt");
 
 	this.game.load.spritesheet("sea", "assets/images/sea.png", 640, 20);
+	this.game.load.spritesheet("kicker", "assets/images/kicker.png", 64, 32);
 	this.game.load.spritesheet("gazoline", "assets/images/gazoline.png", 26, 28);
 	this.game.load.spritesheet("fish", "assets/images/fish.png", 32, 22);
+	this.game.load.spritesheet("toxic", "assets/images/toxic.png", 12, 12);
 	this.game.load.spritesheet("guiframebar", "assets/images/guiframebar.png", 216, 28);
 	this.game.load.spritesheet("guibar", "assets/images/guibar.png", 200, 12);
+
+	this.game.load.physics('kickerdata', 'assets/physics_data/kickerdata.json');
 };
 
 LoadingState.prototype.create = function() {

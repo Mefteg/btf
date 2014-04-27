@@ -19,6 +19,8 @@ BehaviourFish.prototype.create = function() {
 	go.body.angle = Math.random() * 360;
 
 	this.delay = 0;
+
+	this.alive = true;
 };
 
 BehaviourFish.prototype.update = function() {
@@ -27,19 +29,29 @@ BehaviourFish.prototype.update = function() {
 	var go = this.gameobject;
 
 	if (go.x + go.width < go.game.camera.x) {
-		var delta = 1 + Math.random();
-		go.body.x = go.game.camera.x + delta * go.game.camera.width;
+		this.relocate();
 	}
 
 	go.body.setZeroRotation();
 
-	if (this.delay < 0) {
-		this.computeDirection();
+	if (this.alive) {
+		if (this.delay < 0) {
+			this.computeDirection();
 
-		this.delay = 1000 + Math.random() * 1000;
+			this.delay = 1000 + Math.random() * 1000;
+		} else {
+			this.delay -= go.game.time.elapsed;
+		}
 	} else {
-		this.delay -= go.game.time.elapsed;
+		go.body.angle = 0;
+		go.body.velocity.x = 0;
+		go.body.velocity.y = -50;
+
+		if (go.y < 275) {
+			go.body.velocity.y = 0;
+		}
 	}
+	
 };
 
 BehaviourFish.prototype.computeDirection = function() {
@@ -55,11 +67,31 @@ BehaviourFish.prototype.computeDirection = function() {
 	go.body.velocity.y = y * speed;
 };
 
+BehaviourFish.prototype.relocate = function() {
+	var go = this.gameobject;
+
+	this.alive = true;
+
+	go.layer = "fish";
+	go.collisionManager.changeGameObjectLayer(go, "fish");
+
+	var delta = 1 + Math.random();
+	go.body.x = go.game.camera.x + delta * go.game.camera.width;
+	go.body.y = 265 + go.height * 2 + Math.random() * 50;
+};
+
 BehaviourFish.prototype.onBeginContact = function(_body2, _shapeA, _shapeB, _equation) {
 	var go = this.gameobject;
 
-	go.body.angle = (go.body.angle + 150 + Math.random() * 60) % 360;
-	this.computeDirection();
+	if (_body2.sprite.layer === "toxic") {
+		go.layer = "default";
+		go.collisionManager.changeGameObjectLayer(go, "default");
+		this.alive = false;
+	} else {
+		go.body.angle = (go.body.angle + 150 + Math.random() * 60) % 360;
+		this.computeDirection();
+	}
+	
 };
 
 BehaviourFish.prototype.degToRad = function(_degrees) {

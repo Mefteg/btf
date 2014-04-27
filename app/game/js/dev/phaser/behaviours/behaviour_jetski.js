@@ -7,8 +7,11 @@ var BehaviourJetski = function(_gameobject, _args){
 BehaviourJetski.prototype = Object.create(Behaviour.prototype);
 BehaviourJetski.prototype.constructor = BehaviourJetski;
 
-BehaviourJetski.prototype.create = function() {
+BehaviourJetski.prototype.create = function(_toxicEmitter) {
 	Behaviour.prototype.create.call(this);
+
+	this.toxicEmitter = _toxicEmitter;
+	this.toxicDelay = 0;
 
 	var go = this.gameobject;
 	this.cursors = go.game.input.keyboard.createCursorKeys();
@@ -47,6 +50,14 @@ BehaviourJetski.prototype.update = function() {
 		        go.body.data.force[1] += magnitude * Math.sin(angle);
 
 		        go.game.pollinator.dispatch("updateTank", {tank: go.gazoline});
+
+		        if (this.toxicDelay == 0) {
+		        	var x = go.x;
+			        var y = go.y + go.height;
+			        go.game.pollinator.dispatch("spread_toxic", {x: x, y: y});
+
+			        this.toxicDelay = 500;
+		        }		        
 		    }
 	    } else if (this.cursors.left.isDown) {
 	    	var magnitude = go.body.world.pxmi(-100);
@@ -56,12 +67,13 @@ BehaviourJetski.prototype.update = function() {
 	        go.body.data.force[1] += magnitude * Math.sin(angle);
 
 	        if (go.body.velocity.x > 0) go.body.velocity.x = 0;
-
-	        
 	    }
-
-	    go.game.pollinator.dispatch("updateTank", {tank: go.gazoline});
 	}
+
+	this.toxicDelay -= go.game.time.elapsed;
+	if (this.toxicDelay < 0) this.toxicDelay = 0;
+
+	go.game.pollinator.dispatch("updateTank", {tank: go.gazoline});
 };
 
 BehaviourJetski.prototype.go = function() {

@@ -30,7 +30,8 @@ PhysicsSettings.LAYERS = {
 	"default" : {"collisions" :[] },
 	"jetski" : {"collisions" : ["obstacle"] },
 	"obstacle" : {"collisions" : ["jetski","fish"] },
-	"fish": {"collisions" : ["obstacle"]}
+	"fish": {"collisions" : ["obstacle", "toxic"]},
+	"toxic": {"collisions" : ["fish"]}
 };
 
 /**
