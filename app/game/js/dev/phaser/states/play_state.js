@@ -37,6 +37,9 @@ PlayState.prototype.create = function() {
 
 	this.game.pollinator.on("gameover", this.gameOver, this);
 
+	this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+	//this.game.input.onDown.add(this.goFullscreen, this);
+
 	// GAMEOBJECTS
 
 	this.createGameObjects();
@@ -194,6 +197,15 @@ PlayState.prototype.createGameObjects = function() {
 		this.txtPlay.cameraOffset.y = this.game.camera.height * 0.5 - 50;
 		this.txtPlay.inputEnabled = true;
 	}
+
+	// button fullscreen
+	this.btnFullscreen = this.game.add.button(
+		0, 0, 'fullscreen', this.goFullscreen, this, 0, 0, 0);
+	this.btnFullscreen.fixedToCamera = true;
+	this.btnFullscreen.cameraOffset.x =
+		this.game.camera.width - (this.btnFullscreen.width + 10);
+	this.btnFullscreen.cameraOffset.y =
+		this.game.camera.height - (this.btnFullscreen.height + 10);
 };
 
 PlayState.prototype.createBehaviours = function() {
@@ -269,4 +281,8 @@ PlayState.prototype.gameOver = function() {
 		score: this.score.score,
 		deadFishes: this.score.deadFishes
 	});
+};
+
+PlayState.prototype.goFullscreen = function() {
+	this.game.scale.startFullScreen(false);
 };

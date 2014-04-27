@@ -23,14 +23,11 @@ LoadingState.prototype.preload = function() {
 	this.game.load.spritesheet("toxic", "assets/images/toxic.png", 12, 12);
 	this.game.load.spritesheet("guiframebar", "assets/images/guiframebar.png", 216, 28);
 	this.game.load.spritesheet("guibar", "assets/images/guibar.png", 200, 12);
+	this.game.load.spritesheet("fullscreen", "assets/images/fullscreen.png", 28, 28);
 };
 
 LoadingState.prototype.create = function() {
 	this.game.state.start("Play");
-	/*this.game.state.start("End", true, false, {
-		score: 2345,
-		deadFishes: 37
-	});*/
 };
 
 LoadingState.prototype.update = function() {

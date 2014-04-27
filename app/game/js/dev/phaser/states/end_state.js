@@ -116,6 +116,15 @@ EndState.prototype.createGameObjects = function() {
 	this.txtPlay.cameraOffset.x = 225;
 	this.txtPlay.cameraOffset.y = 180;
 	this.txtPlay.inputEnabled = true;
+
+	// button fullscreen
+	this.btnFullscreen = this.game.add.button(
+		0, 0, 'fullscreen', this.goFullscreen, this, 0, 0, 0);
+	this.btnFullscreen.fixedToCamera = true;
+	this.btnFullscreen.cameraOffset.x =
+		this.game.camera.width - (this.btnFullscreen.width + 10);
+	this.btnFullscreen.cameraOffset.y =
+		this.game.camera.height - (this.btnFullscreen.height + 10);
 };
 
 EndState.prototype.createBehaviours = function() {
@@ -128,4 +137,8 @@ EndState.prototype.createBehaviours = function() {
 		bFish.alive = false;
 		fish.addBehaviour(bFish);
 	};
+};
+
+EndState.prototype.goFullscreen = function() {
+	this.game.scale.startFullScreen(false);
 };
