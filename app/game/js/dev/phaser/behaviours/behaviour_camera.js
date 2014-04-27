@@ -35,7 +35,7 @@ BehaviourCamera.prototype.create = function() {
 					0,
 					camera.height * 0.1,
 					camera.width * 0.5,
-					camera.height * 0.8
+					camera.height - (camera.height * 0.1 + (camera.height - 280))
 				);
 			} else {
 				console.warn("NOT FOUND: " + this.args.follow);

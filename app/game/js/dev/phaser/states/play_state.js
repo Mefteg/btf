@@ -95,26 +95,11 @@ PlayState.prototype.createGameObjects = function() {
 	for (var i = 0; i < 1; i++) {
 		var kicker = new GameObject(this.game, 0, 0, 'kicker');
 		kicker.layer = "obstacle";
-		kicker.x = this.game.camera.width * (i + 0.5);
-		kicker.y = this.seas[0].y - 10;
-		this.game.add.existing(kicker);
 
 		this.game.physics.p2.enable(kicker);
 		kicker.body.static = true;
-		kicker.body.clearShapes();
-
-		kicker.body.addPolygon({}, [
-			[0, 32],
-			[64, 32],
-			[64, 0]
-		]);
-
-		kicker.body.data.shapeOffsets[0][0] = -0.5;
-
 		this.collisionManager.addGameObject(kicker);
-
-		kicker.body.debug = true;
-
+		
 		this.kickers.add(kicker);
 	};
 
@@ -216,6 +201,15 @@ PlayState.prototype.createBehaviours = function() {
 		var bSea = new BehaviourSea(underground);
 		bSea.create(this.undergrounds, i);
 		underground.addBehaviour(bSea);
+	};
+
+	// kickers
+	for (var i = 0; i < this.kickers.length; i++) {
+		var kicker = this.kickers.getAt(i);
+
+		var bKicker = new BehaviourKicker(kicker);
+		bKicker.create(i);
+		kicker.addBehaviour(bKicker);
 	};
 
 	// fishes
