@@ -29,7 +29,7 @@ LoadingState.prototype.preload = function() {
 };
 
 LoadingState.prototype.create = function() {
-	this.game.state.start("Play");
+	this.game.state.start("Landing");
 };
 
 LoadingState.prototype.update = function() {

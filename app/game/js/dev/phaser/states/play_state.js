@@ -219,8 +219,7 @@ PlayState.prototype.createGameObjects = function() {
 	this.btnFullscreen = this.game.add.button(
 		0, 0, 'fullscreen', this.goFullscreen, this, 0, 0, 0);
 	this.btnFullscreen.fixedToCamera = true;
-	this.btnFullscreen.cameraOffset.x =
-		this.game.camera.width - (this.btnFullscreen.width + 10);
+	this.btnFullscreen.cameraOffset.x = 10;
 	this.btnFullscreen.cameraOffset.y =
 		this.game.camera.height - (this.btnFullscreen.height + 10);
 };

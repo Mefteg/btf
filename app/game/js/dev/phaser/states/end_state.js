@@ -36,8 +36,8 @@ EndState.prototype.create = function() {
 };
 
 EndState.prototype.update = function() {
-	if (	this.txtPlay.input.justPressed()
-		||	this.txtPlay.input.justPressed(1)
+	if (	this.game.input.mousePointer.isDown
+		||	this.game.input.pointer1.isDown
 		||	this.game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)
 		||	this.game.input.keyboard.isDown(Phaser.Keyboard.ENTER)) {
 		this.txtPlay.destroy();
@@ -74,20 +74,36 @@ EndState.prototype.createGameObjects = function() {
 		this.fishes.add(fish);
 	}
 
+	// clouds
+	this.clouds = this.game.add.group();
+	for (var i=0; i<5; i++) {
+		var cloud = null;
+		if (Math.random() < 0.5) {
+			cloud = new GameObject(this.game, 0, 0, 'cloud1');
+		} else {
+			cloud = new GameObject(this.game, 0, 0, 'cloud2');
+		}
+
+		cloud.x = Math.random() * 2 * this.game.camera.width;
+		cloud.y = 20 + cloud.height * 2 + Math.random() * 50;
+
+		this.clouds.add(cloud);
+	}
+
 	// gui score
 	var textGuiScore = "You achieve to make a score of";
-	this.guiScore = this.game.add.bitmapText(0, 0, 'btf_font', textGuiScore, 24);
+	this.guiScore = this.game.add.bitmapText(0, 0, 'btf_font', textGuiScore, 28);
 	this.guiScore.fixedToCamera = true;
-	this.guiScore.cameraOffset.x = 80;
-	this.guiScore.cameraOffset.y = 12;
+	this.guiScore.cameraOffset.x = 50;
+	this.guiScore.cameraOffset.y = 40;
 	this.game.add.existing(this.guiScore);
 
 	// gui points
 	var textGuiPoints = "" + this.score;
-	this.guiPoints = this.game.add.bitmapText(0, 0, 'btf_font', textGuiPoints, 40);
+	this.guiPoints = this.game.add.bitmapText(0, 0, 'btf_font', textGuiPoints, 48);
 	this.guiPoints.fixedToCamera = true;
-	this.guiPoints.cameraOffset.x = 260;
-	this.guiPoints.cameraOffset.y = 45;
+	this.guiPoints.cameraOffset.x = 240;
+	this.guiPoints.cameraOffset.y = 80;
 	this.game.add.existing(this.guiPoints);
 
 	// gui dead fishes
@@ -95,35 +111,27 @@ EndState.prototype.createGameObjects = function() {
 	if (this.deadFishes <= 1) {
 		textGuiDeadFishes = "And you kill " + this.deadFishes + " fish";
 	}
-	this.guiDeadFishes = this.game.add.bitmapText(0, 0, 'btf_font', textGuiDeadFishes, 24);
+	this.guiDeadFishes = this.game.add.bitmapText(0, 0, 'btf_font', textGuiDeadFishes, 28);
 	this.guiDeadFishes.name = "guiDeadFishes";
 	this.guiDeadFishes.fixedToCamera = true;
-	this.guiDeadFishes.cameraOffset.x = 160;
-	this.guiDeadFishes.cameraOffset.y = 110;
+	this.guiDeadFishes.cameraOffset.x = 140;
+	this.guiDeadFishes.cameraOffset.y = 150;
 	this.game.add.existing(this.guiDeadFishes);
 
 	// gui fun
 	var textGuiFun = "so fun, right?!";
-	this.guiFun = this.game.add.bitmapText(0, 0, 'btf_font', textGuiFun, 18);
+	this.guiFun = this.game.add.bitmapText(0, 0, 'btf_font', textGuiFun, 24);
 	this.guiFun.name = "guiFun";
 	this.guiFun.fixedToCamera = true;
 	this.guiFun.cameraOffset.x = 240;
-	this.guiFun.cameraOffset.y = 140;
+	this.guiFun.cameraOffset.y = 190;
 	this.game.add.existing(this.guiFun);
-
-	// text play
-	this.txtPlay = this.game.add.bitmapText(0, 0, 'btf_font', "PLAY", 64);
-	this.txtPlay.fixedToCamera = true;
-	this.txtPlay.cameraOffset.x = 225;
-	this.txtPlay.cameraOffset.y = 180;
-	this.txtPlay.inputEnabled = true;
 
 	// button fullscreen
 	this.btnFullscreen = this.game.add.button(
 		0, 0, 'fullscreen', this.goFullscreen, this, 0, 0, 0);
 	this.btnFullscreen.fixedToCamera = true;
-	this.btnFullscreen.cameraOffset.x =
-		this.game.camera.width - (this.btnFullscreen.width + 10);
+	this.btnFullscreen.cameraOffset.x = 10;
 	this.btnFullscreen.cameraOffset.y =
 		this.game.camera.height - (this.btnFullscreen.height + 10);
 };
@@ -137,6 +145,15 @@ EndState.prototype.createBehaviours = function() {
 		bFish.create();
 		bFish.alive = false;
 		fish.addBehaviour(bFish);
+	};
+
+	// clouds
+	for (var i = 0; i < this.clouds.length; i++) {
+		var cloud = this.clouds.getAt(i);
+
+		var bCloud = new BehaviourCloud(cloud);
+		bCloud.create();
+		cloud.addBehaviour(bCloud);
 	};
 };
 

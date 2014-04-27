@@ -11,6 +11,15 @@ BehaviourCloud.prototype.create = function() {
 	Behaviour.prototype.create.call(this);
 
 	var go = this.gameobject;
+
+	this.speed = 0.3 + Math.random() * 0.3;
+
+	this.deltaY = 2.5 + Math.random() * 5;
+
+	var self = this;
+	setTimeout(function() {
+		self.goDown();
+	}, Math.random() * 1000);
 };
 
 BehaviourCloud.prototype.update = function() {
@@ -18,9 +27,27 @@ BehaviourCloud.prototype.update = function() {
 
 	var go = this.gameobject;
 
+	go.x += -this.speed;
+
 	if ((go.x + go.width * 0.5) < go.game.camera.x) {
 		this.relocate();
     }
+};
+
+BehaviourCloud.prototype.goDown = function() {
+	var go = this.gameobject;
+	this.tween = go.game.add.tween(go);
+	this.tween.to({y: (go.y + this.deltaY)}, 1500, Phaser.Easing.Sinusoidal.InOut);
+	this.tween.onComplete.add(this.goUp, this);
+	this.tween.start();
+};
+
+BehaviourCloud.prototype.goUp = function() {
+	var go = this.gameobject;
+	this.tween = go.game.add.tween(go);
+	this.tween.to({y: (go.y - this.deltaY)}, 1500, Phaser.Easing.Sinusoidal.InOut);
+	this.tween.onComplete.add(this.goDown, this);
+	this.tween.start();
 };
 
 BehaviourCloud.prototype.relocate = function() {
